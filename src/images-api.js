@@ -7,8 +7,8 @@ export const fetchImagesByQuery = async (query, page) => {
       client_id: "ghdoKY7TcbZTj1eBhOcH2xxXvry68YO2AmEtPsMb5DQ",
       page: page,
       per_page: 12,
+      orientation: "landscape",
     },
   });
-  console.log(response.data);
-  return response.data;
+  return response.data.results;
 };

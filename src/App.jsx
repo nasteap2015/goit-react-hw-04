@@ -14,27 +14,31 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(0);
+
 
   const handleSearch = async (query) => {
     try {
 	  setImages([]);
 	  setError(false);
       setLoading(true);
-      const result = await fetchImagesByQuery(query, page);
+      const { result, total_pages } = await fetchImagesByQuery(query, page);
       setImages(result);
+      setPages(total_pages)
     } catch (error) {
       setError(true);
     } finally {
       setLoading(false);
     }
   };
-  
+
   return (
     <>
       <SearchBar onSearch={handleSearch}/>
-      <Loader />
-      <ErrorMessage />
-      {images.lenght > 0 && <ImageGallery source={images} />}
+      {loading && <Loader />}
+      {error && <ErrorMessage />}
+      <ImageGallery images={images} />
+      {/* {images.lenght > 0 && <ImageGallery source={images} />} */}
       <LoadMoreBtn />
       <ImageModal />
     </>
