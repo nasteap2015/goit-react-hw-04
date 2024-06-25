@@ -9,7 +9,15 @@ const SearchBar = ({ onSearch }) => {
     const form = evt.target;
 		const query = form.elements.query.value;
 		if(form.elements.query.value.trim() === "") {
-			toast.error("Please enter a search query!")
+            toast('Please enter a search query!',
+                {
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                }
+            );
 			return;
 		}
 		onSearch(query);
@@ -27,7 +35,7 @@ const SearchBar = ({ onSearch }) => {
                     placeholder="Search images and photos"
                     className={css.input}
                 />
-                <button type="submit" className={css.searchButton}><IoSearch /></button>
+                <button type="submit" className={css.searchButton}><IoSearch className={css.buttonIcon} /></button>
             </form>
         </header>
     )

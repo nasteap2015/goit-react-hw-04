@@ -29,3 +29,11 @@
     outline: none;
     width: 250px;
 }
+
+.buttonIcon{
+    transition: transform 200ms linear;
+}
+
+.searchButton:hover .buttonIcon {
+    transform: scale(1.15);
+}
