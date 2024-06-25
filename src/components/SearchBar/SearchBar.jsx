@@ -1,6 +1,6 @@
 import { IoSearch } from "react-icons/io5";
 
-const SearchBar = (onSearch) => {
+const SearchBar = ({ onSearch }) => {
     const handleSubmit = (evt) => {
     evt.preventDefault();
     const form = evt.target;
@@ -19,8 +19,8 @@ const SearchBar = (onSearch) => {
                 <input
                     type="text"
                     name="query"
-                    autocomplete="off"
-                    autofocus
+                    autoComplete="off"
+                    autoFocus
                     placeholder="Search images and photos"
                 />
                 <button type="submit"><IoSearch /></button>
