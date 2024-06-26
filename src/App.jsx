@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
 import SearchBar from './components/SearchBar/SearchBar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
@@ -32,50 +32,43 @@ function App() {
     setIsOpen(false);
   }
   
-  const handleSearch = async (query) => {
-    try {
-      setImages([]);
-      setShowBtn(false);
-	    setError(false);
-      setLoading(true);
-      const { results, total_pages } = await fetchImagesByQuery(query, page);
-      if (total_pages === 0) {
-        toast.error("No image found!");
-			  return;
-      } else {
-        setImages(prevState => {
-          return [...prevState, ...results];
-        });
-        setPage(page + 1);
-        setShowBtn(total_pages && total_pages !== page);
-        setQuery(query);
-        console.log(query);
+  useEffect(() => {
+    if (!query.trim()) return;
+
+    async function fetchImages() {
+      try {
+        setShowBtn(false);
+        setError(false);
+        setLoading(true);
+        const { results, total_pages } = await fetchImagesByQuery(query, page);
+        if (total_pages === 0) {
+          toast.error("No image found!");
+          return;
+        } else {
+          setImages(prevState => {
+            return [...prevState, ...results];
+          });
+          setShowBtn(total_pages && total_pages !== page);
+        }
+      } catch (error) {
+        setError(true);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+    fetchImages();
+  }, [query, page]
+  );
+    
+    const handleSearch = async query => {
+      setQuery(query);
+      setPage(1);
+      setImages([]);
+    };
 
-  const handleLoadMore = async () => {
-    try {
-      console.log(query);
-	    setError(false);
-      setLoading(true);
-      const { results, total_pages } = await fetchImagesByQuery(query, page);
-      setImages(prevState => {
-          return [...prevState, ...results];
-      });
+    const handleLoadMore = async () => {
       setPage(page + 1);
-      setShowBtn(total_pages && total_pages !== page);
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+    };
 
   return (
     <>
